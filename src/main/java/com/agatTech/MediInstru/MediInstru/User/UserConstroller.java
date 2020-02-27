@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +33,23 @@ public class UserConstroller {
 			throw new UserNotFoundException("id-" + userId);
 
 		return task.get();
+	}
+	
+	@GetMapping("/getUserDetails")
+	public User getUserDetails() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username="NA";
+		if (principal instanceof UserDetails) {
+		   username = ((UserDetails)principal).getUsername();
+		} else {
+		   username = principal.toString();
+		}
+		User task = userRepository.findByusername(username);
+
+		if (task==null)
+			throw new UserNotFoundException("id-" + task.getAuthToken());
+
+		return task;
 	}
 	
 

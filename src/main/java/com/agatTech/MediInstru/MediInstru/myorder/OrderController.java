@@ -1,6 +1,7 @@
 package com.agatTech.MediInstru.MediInstru.myorder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,24 +15,57 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.agatTech.MediInstru.MediInstru.User.UserNotFoundException;
+import com.agatTech.MediInstru.MediInstru.customer.CustomerModel;
+import com.agatTech.MediInstru.MediInstru.customer.CustomerRepo;
+import com.agatTech.MediInstru.MediInstru.product.Product;
+import com.agatTech.MediInstru.MediInstru.product.ProductRepo;
 
 @RestController
 public class OrderController {
 	@Autowired
 	private OrderRepo orderRepo;
 	
+	@Autowired
+	private CustomerRepo customerRepo;
+	
+	@Autowired
+	private ProductRepo productRepo;
+	
 	@GetMapping("/getOrders")
 	public List<OrderClass> getOrder() {
 		return orderRepo.findAll();
 	}
 	@GetMapping("/getOrderById/{user_id}")
-	public OrderClass getOrderByUserId(@PathVariable int user_id) {
-		Optional<OrderClass> task = orderRepo.findOrderByUserId(user_id);
+	public List<UIOrderClass> getOrderByUserId(@PathVariable int user_id) {
+		List<OrderClass> task = orderRepo.findOrderByUserId(user_id);
+		UIOrderClass uiOrderObject;
+		List<UIOrderClass> myOrderArray=new ArrayList<>();
+		for(int index=0;index<task.size();index++) {
+			uiOrderObject=new UIOrderClass();
+			OrderClass order = task.get(index);
+			Optional<CustomerModel> customerObject=customerRepo.findById(order.getC_id());
+			Optional<Product> productObject=productRepo.findById(order.getP_id());
+			uiOrderObject.setO_id(order.getO_id());
+			uiOrderObject.setUserId(order.getUserId());
+			uiOrderObject.setC_id(order.getC_id());
+			uiOrderObject.setP_id(order.getP_id());
+			uiOrderObject.setActual_amount(order.getActual_amount());
+			uiOrderObject.setGst_amount(order.getGst_amount());
+			uiOrderObject.setC_gst(order.getC_gst());
+			uiOrderObject.setS_gst(order.getS_gst());
+			uiOrderObject.setC_name(customerObject.get().getC_name());
+			uiOrderObject.setC_h_name(customerObject.get().getC_h_name());
+			uiOrderObject.setC_address(customerObject.get().getC_address());
+			uiOrderObject.setC_mobile(customerObject.get().getC_mobile());
+			uiOrderObject.setP_name(productObject.get().getProduct_name());
+			
+			myOrderArray.add(uiOrderObject);
+		}
 
-		if (task.isPresent())
-			throw new UserNotFoundException("id-" + user_id);
+		if (myOrderArray.isEmpty())
+			throw new OrderNotFoundException("id-" + user_id);
 
-		return task.get();
+		return myOrderArray;
 	}
 	//@Query("SELECT e from Employee e where e.employeeName =:name AND e.employeeRole =:role")
 	
