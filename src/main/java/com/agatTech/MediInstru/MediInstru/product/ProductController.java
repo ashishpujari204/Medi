@@ -2,7 +2,6 @@ package com.agatTech.MediInstru.MediInstru.product;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +25,14 @@ public class ProductController {
 	public List<Product> getAllUser() {
 		return productRepo.findAll();
 	}
-	@GetMapping("/getProductById/{user_id}")
-	public Product getProductById(@PathVariable int user_id) {
-		Optional<Product> task = productRepo.findProductByUserId(user_id);
+	@GetMapping("/getProductById/{userId}")
+	public List<Product> getProductById(@PathVariable int userId) {
+		List<Product> task = productRepo.findProductByUserId(userId);
 
-		if (task.isPresent())
-			throw new UserNotFoundException("id-" + user_id);
+		if (task.isEmpty())
+			throw new UserNotFoundException("id-" + userId);
 
-		return task.get();
+		return task;
 	}
 	
 	@RequestMapping(value = "/createProduct", method = RequestMethod.POST)

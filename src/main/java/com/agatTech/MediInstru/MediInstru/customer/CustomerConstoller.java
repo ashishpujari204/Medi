@@ -2,7 +2,6 @@ package com.agatTech.MediInstru.MediInstru.customer;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.agatTech.MediInstru.MediInstru.User.UserNotFoundException;
-import com.agatTech.MediInstru.MediInstru.product.Product;
-import com.agatTech.MediInstru.MediInstru.product.ProductRepo;
 
 @RestController
 public class CustomerConstoller {
@@ -27,14 +24,14 @@ public class CustomerConstoller {
 	public List<CustomerModel> getAllUser() {
 		return customerRepo.findAll();
 	}
-	@GetMapping("/getCustomer/{user_id}")
-	public CustomerModel getProductById(@PathVariable int user_id) {
-		Optional<CustomerModel> task = customerRepo.findCustomerByUserId(user_id);
+	@GetMapping("/getCustomerById/{userId}")
+	public List<CustomerModel> getProductById(@PathVariable int userId) {
+		List<CustomerModel> task = customerRepo.findCustomerByUserId(userId);
 
-		if (task.isPresent())
-			throw new UserNotFoundException("id-" + user_id);
+		if (task.isEmpty())
+			throw new UserNotFoundException("id-" + userId);
 
-		return task.get();
+		return task;
 	}
 	
 	@RequestMapping(value = "/createCustomer", method = RequestMethod.POST)

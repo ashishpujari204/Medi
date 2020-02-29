@@ -1,6 +1,6 @@
 package com.agatTech.MediInstru.MediInstru.customer;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerRepo extends JpaRepository<CustomerModel,Integer> {
 
-	Optional<CustomerModel> findCustomerByUserId(int user_id);
+	List<CustomerModel> findCustomerByUserId(int userId);
 	
 	//Optional<CustomerModel> findByI(int user_id);
 

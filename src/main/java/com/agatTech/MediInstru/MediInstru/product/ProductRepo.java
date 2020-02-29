@@ -1,9 +1,6 @@
 package com.agatTech.MediInstru.MediInstru.product;
 
-
-
-import java.util.Optional;
-
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepo extends JpaRepository<Product,Integer> {
 
-	Optional<Product> findProductByUserId(int user_id);
+	List<Product> findProductByUserId(int userId);
 
 	//List<Product> getProductList();
 	
