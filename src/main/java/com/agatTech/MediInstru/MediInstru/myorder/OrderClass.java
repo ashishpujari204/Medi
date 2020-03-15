@@ -34,6 +34,41 @@ public class OrderClass extends Auditable<String> {
 	@Column(name="s_gst")
 	private String s_gst;
 
+	@Column(name="total_amount")
+	private String total_amount;
+	
+	@Column(name="no_of_item")
+	private String no_of_item;
+	
+	@Column(name="order_id")
+	private String order_id;
+	
+	
+
+	public String getTotal_amount() {
+		return total_amount;
+	}
+
+	public void setTotal_amount(String total_amount) {
+		this.total_amount = total_amount;
+	}
+
+	public String getNo_of_item() {
+		return no_of_item;
+	}
+
+	public void setNo_of_item(String no_of_item) {
+		this.no_of_item = no_of_item;
+	}
+
+	public String getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
+	}
+
 	public int getO_id() {
 		return o_id;
 	}

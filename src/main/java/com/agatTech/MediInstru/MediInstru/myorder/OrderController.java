@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.agatTech.MediInstru.MediInstru.User.UserNotFoundException;
 import com.agatTech.MediInstru.MediInstru.customer.CustomerModel;
 import com.agatTech.MediInstru.MediInstru.customer.CustomerRepo;
 import com.agatTech.MediInstru.MediInstru.product.Product;
@@ -24,6 +22,9 @@ import com.agatTech.MediInstru.MediInstru.product.ProductRepo;
 public class OrderController {
 	@Autowired
 	private OrderRepo orderRepo;
+	
+	
+	
 	
 	@Autowired
 	private CustomerRepo customerRepo;
@@ -35,6 +36,8 @@ public class OrderController {
 	public List<OrderClass> getOrder() {
 		return orderRepo.findAll();
 	}
+	
+	
 	@GetMapping("/getOrderById/{user_id}")
 	public List<UIOrderClass> getOrderByUserId(@PathVariable int user_id) {
 		List<OrderClass> task = orderRepo.findOrderByUserId(user_id);
@@ -46,7 +49,7 @@ public class OrderController {
 			Optional<CustomerModel> customerObject=customerRepo.findById(order.getC_id());
 			Optional<Product> productObject=productRepo.findById(order.getP_id());
 			uiOrderObject.setO_id(order.getO_id());
-			uiOrderObject.setUserId(order.getUserId());
+			uiOrderObject.setUser_id(order.getUserId());
 			uiOrderObject.setC_id(order.getC_id());
 			uiOrderObject.setP_id(order.getP_id());
 			uiOrderObject.setActual_amount(order.getActual_amount());
@@ -57,7 +60,7 @@ public class OrderController {
 			uiOrderObject.setC_h_name(customerObject.get().getC_h_name());
 			uiOrderObject.setC_address(customerObject.get().getC_address());
 			uiOrderObject.setC_mobile(customerObject.get().getC_mobile());
-			uiOrderObject.setP_name(productObject.get().getProduct_name());
+			uiOrderObject.setProduct_name(productObject.get().getProduct_name());
 			
 			myOrderArray.add(uiOrderObject);
 		}
@@ -71,9 +74,12 @@ public class OrderController {
 	
 	
 	@RequestMapping(value = "/createOrder", method = RequestMethod.POST)
-	public OrderClass saveOrder(@RequestBody OrderClass product) throws Exception {
+	public OrderClass saveOrder(@RequestBody List<OrderClass> products) throws Exception {
+		OrderClass saveProduct = null;
+		for(int index=0;index<products.size();index++) {
+			OrderClass product=products.get(index);
 			System.out.println("******"+product.getUserId());
-			OrderClass saveProduct = new OrderClass();
+			 saveProduct = new OrderClass();
 			saveProduct.setC_id(product.getC_id());
 			saveProduct.setP_id((product.getP_id()));
 			saveProduct.setUserId(product.getUserId());
@@ -81,12 +87,17 @@ public class OrderController {
 			saveProduct.setGst_amount((product.getGst_amount()));
 			saveProduct.setC_gst((product.getC_gst()));
 			saveProduct.setS_gst((product.getS_gst()));
+			saveProduct.setTotal_amount(product.getTotal_amount());
+			saveProduct.setNo_of_item(product.getNo_of_item());
+			saveProduct.setOrder_id(product.getOrder_id());
+
 			OrderClass saveProducts = orderRepo.save(saveProduct);
 
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(saveProducts.getO_id()).toUri();
 
-			return saveProduct;//ResponseEntity.created(location).build();
-		
+			//ResponseEntity.created(location).build();
+		}
+		return saveProduct;
 	}
 }

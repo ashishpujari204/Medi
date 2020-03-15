@@ -10,6 +10,7 @@ public interface CustomerRepo extends JpaRepository<CustomerModel,Integer> {
 
 	List<CustomerModel> findCustomerByUserId(int userId);
 	
+	
 	//Optional<CustomerModel> findByI(int user_id);
 
 	//List<Product> getProductList();

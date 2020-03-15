@@ -2,7 +2,7 @@ package com.agatTech.MediInstru.MediInstru.myorder;
 
 public class UIOrderClass {
 	private int o_id;
-	private int userId;
+	private int user_id;
 	private int c_id;
 	private int p_id;
 	private String actual_amount;
@@ -13,18 +13,26 @@ public class UIOrderClass {
 	private String c_address;
 	private String c_h_name;
 	private String c_mobile;
-	private String p_name;
+	private String product_name;
+	private String created_date;
+	
+	public String getCreated_date() {
+		return created_date;
+	}
+	public void setCreated_date(String created_date) {
+		this.created_date = created_date;
+	}
 	public int getO_id() {
 		return o_id;
 	}
 	public void setO_id(int o_id) {
 		this.o_id = o_id;
 	}
-	public int getUserId() {
-		return userId;
+	public int getUser_id() {
+		return user_id;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
 	}
 	public int getC_id() {
 		return c_id;
@@ -86,11 +94,13 @@ public class UIOrderClass {
 	public void setC_mobile(String c_mobile) {
 		this.c_mobile = c_mobile;
 	}
-	public String getP_name() {
-		return p_name;
+	public String getProduct_name() {
+		return product_name;
 	}
-	public void setP_name(String p_name) {
-		this.p_name = p_name;
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
 	}
+	
+	
 	
 }
