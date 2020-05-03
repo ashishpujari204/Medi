@@ -37,7 +37,11 @@ public class OrderController {
 		return orderRepo.findAll();
 	}
 	
-	
+	@GetMapping("/getOrderAllById/{user_id}")
+	public List<UIOrderClass> getOrdeAllrByUserId(@PathVariable int user_id) {
+		List<UIOrderClass> task = orderRepo.findByAllOrderByUserId(user_id);
+		return task;
+	}
 	@GetMapping("/getOrderById/{user_id}")
 	public List<UIOrderClass> getOrderByUserId(@PathVariable int user_id) {
 		List<OrderClass> task = orderRepo.findOrderByUserId(user_id);
